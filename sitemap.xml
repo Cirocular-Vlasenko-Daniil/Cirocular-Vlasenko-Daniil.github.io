@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://10minutezine.com/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://10minutezine.com/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://10minutezine.com/ru/"/>
+  </url>
+  <url>
+    <loc>https://10minutezine.com/ru/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://10minutezine.com/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://10minutezine.com/ru/"/>
+  </url>
+  <url>
+    <loc>https://10minutezine.com/contact.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://10minutezine.com/contact.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://10minutezine.com/ru/contact.html"/>
+  </url>
+  <url>
+    <loc>https://10minutezine.com/ru/contact.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://10minutezine.com/contact.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://10minutezine.com/ru/contact.html"/>
+  </url>
+  <url>
+    <loc>https://10minutezine.com/editor.html</loc>
+  </url>
+</urlset>

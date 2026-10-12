@@ -1,0 +1,21 @@
+# 10 minute zine — Apache
+ErrorDocument 404 /404.html
+AddDefaultCharset utf-8
+AddType application/json .zine
+AddType font/ttf .ttf
+AddType image/svg+xml .svg
+AddType text/plain .md
+Options -Indexes
+
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  <FilesMatch "\.(html|zine|json)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+  <FilesMatch "\.(js|css)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.(ttf|png|jpg|svg)$">
+    Header set Cache-Control "public, max-age=604800"
+  </FilesMatch>
+</IfModule>

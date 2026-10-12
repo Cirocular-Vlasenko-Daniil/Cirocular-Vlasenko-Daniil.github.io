@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /tools/
+Disallow: /site-src/
+
+Sitemap: https://10minutezine.com/sitemap.xml
