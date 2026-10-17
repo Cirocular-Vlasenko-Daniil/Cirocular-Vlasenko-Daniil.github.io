@@ -1,16 +1,16 @@
-import * as M from './model.js?v=a9c1ab4d';
-import { t as tr, getLang, bindLangSwitch } from './i18n.js?v=a9c1ab4d';
-import { initAnalytics, track } from './analytics.js?v=a9c1ab4d';
-import { initFonts, ensureFont, fontList, hasFont } from './fonts.js?v=a9c1ab4d';
-import { pageDL, pageLayout, cellAt } from './layout.js?v=a9c1ab4d';
-import { randomPalette } from './palette.js?v=a9c1ab4d';
-import { pageSVG, svgInner } from './render.js?v=a9c1ab4d';
-import { assets, importImage, registerAsset, setOnReady, makeSampleAsset, effectiveDpi, dimsOf, containZoom } from './images.js?v=a9c1ab4d';
-import { pagesZip } from './raster.js?v=a9c1ab4d';
-import { buildPDF } from './pdf.js?v=a9c1ab4d';
-import { htmlToMd, looksLikeMd } from './md.js?v=a9c1ab4d';
-import { flowMarkdown } from './flow.js?v=a9c1ab4d';
-import * as store from './store.js?v=a9c1ab4d';
+import * as M from './model.js?v=5159f6f2';
+import { t as tr, getLang, bindLangSwitch } from './i18n.js?v=5159f6f2';
+import { initAnalytics, track } from './analytics.js?v=5159f6f2';
+import { initFonts, ensureFont, fontList, hasFont, previewFont } from './fonts.js?v=5159f6f2';
+import { pageDL, pageLayout, cellAt } from './layout.js?v=5159f6f2';
+import { randomPalette } from './palette.js?v=5159f6f2';
+import { pageSVG, svgInner } from './render.js?v=5159f6f2';
+import { assets, importImage, registerAsset, setOnReady, makeSampleAsset, effectiveDpi, dimsOf, containZoom } from './images.js?v=5159f6f2';
+import { pagesZip } from './raster.js?v=5159f6f2';
+import { buildPDF } from './pdf.js?v=5159f6f2';
+import { htmlToMd, looksLikeMd } from './md.js?v=5159f6f2';
+import { flowMarkdown } from './flow.js?v=5159f6f2';
+import * as store from './store.js?v=5159f6f2';
 
 const $ = (s) => document.querySelector(s);
 const S = { doc: null, side: 0, page: 0, sel: null, view: 'pages', info: {} };
@@ -430,15 +430,26 @@ function blockPanel(f) {
     <div class="sec">${body}</div>`;
 }
 
+// шрифты по группам — список длинный, так в нём легче ориентироваться
+const FONT_CATS = [['sans', 'Гротески'], ['serif', 'Антиквы'], ['display', 'Акцидентные'], ['hand', 'Рукописные'], ['mono', 'Моноширинные']];
+
+function fontPick(role, cur) {
+  const fonts = fontList(), f = fonts.find((x) => x.id === cur) || fonts[0];
+  const item = (x) => `<button data-fp-role="${role}" data-fp-id="${x.id}" class="${x.id === f.id ? 'on' : ''}">
+      <span class="fp-name" data-fid="${x.id}" style="font-family:'zfp-${x.id}', 'UI'">${esc(x.name)}</span>
+      <small>${x.role === 'heading' ? tr('для заголовков') : tr('для текста')}</small></button>`;
+  const groups = FONT_CATS.map(([c, name]) => {
+    const fs = fonts.filter((x) => (x.cat || 'sans') === c);
+    return fs.length ? `<div class="fp-group">${tr(name)}</div>${fs.map(item).join('')}` : '';
+  }).join('');
+  previewFont(f.id).then(() => insp.querySelectorAll(`.fp-name[data-fid="${f.id}"]`).forEach((e) => e.classList.add('ok')));
+  return `<div class="fontpick" data-fontpick="${role}">
+    <button class="fp-cur"><span class="fp-name" data-fid="${f.id}" style="font-family:'zfp-${f.id}', 'UI'">${esc(f.name)}</span><i>▾</i></button>
+    <div class="fp-list" hidden>${groups}</div></div>`;
+}
+
 function docPanel() {
   const d = S.doc, sd = side();
-  const fonts = fontList();
-  // шрифты по группам — список длинный, так в нём легче ориентироваться
-  const CATS = [['sans', tr('Гротески')], ['serif', tr('Антиквы')], ['display', tr('Акцидентные')], ['hand', tr('Рукописные')], ['mono', tr('Моноширинные')]];
-  const opt = (cur) => CATS.map(([c, name]) => {
-    const fs = fonts.filter((f) => (f.cat || 'sans') === c);
-    return fs.length ? `<optgroup label="${name}">${fs.map((f) => `<option value="${f.id}" ${f.id === cur ? 'selected' : ''}>${f.name}</option>`).join('')}</optgroup>` : '';
-  }).join('');
   let pageSec = '';
   if (sd.type !== 'none' && S.view !== 'sheet') { // на виде «Лист» — только настройки листа
     const L = pageLayout(d, S.side, S.page);
@@ -508,8 +519,8 @@ function docPanel() {
     ${anyPoster ? `<div class="fld"><label>${tr('Ориентация постера')}</label>${seg('data-orient', [['portrait', tr('Книжная')], ['landscape', tr('Альбомная')]], (d.sides.find((s) => s.type === 'poster')).poster.orient)}</div>` : ''}
   </div>
   <div class="sec"><div class="lbl">${tr('Шрифты')}</div>
-    <div class="fld"><label>${tr('Заголовки')}</label><select data-font="heading">${opt(d.fonts.heading)}</select></div>
-    <div class="fld"><label>${tr('Текст')}</label><select data-font="body">${opt(d.fonts.body)}</select></div>
+    <div class="fld"><label>${tr('Заголовки')}</label>${fontPick('heading', d.fonts.heading)}</div>
+    <div class="fld"><label>${tr('Текст')}</label>${fontPick('body', d.fonts.body)}</div>
   </div>
   <div class="sec"><div class="lbl">${tr('Колонтитулы')}</div>
     <label class="chk"><input type="checkbox" data-hfon="header" ${hf.header.on ? 'checked' : ''}> ${tr('Верхний')}</label>${hfRow('header')}
@@ -1229,7 +1240,23 @@ insp.addEventListener('change', async (e) => {
   }
 });
 
-insp.addEventListener('click', (e) => {
+insp.addEventListener('click', async (e) => {
+  // выбор шрифта: открыть список (образцы шрифтов подгружаются) / выбрать
+  const fp = e.target.closest('.fp-cur');
+  if (fp) {
+    const list = fp.parentElement.querySelector('.fp-list');
+    const open = list.hidden;
+    insp.querySelectorAll('.fp-list').forEach((l) => (l.hidden = true));
+    list.hidden = !open;
+    if (open) for (const el of list.querySelectorAll('.fp-name')) previewFont(el.dataset.fid).then(() => el.classList.add('ok'));
+    return;
+  }
+  const fi = e.target.closest('[data-fp-id]');
+  if (fi) {
+    await ensureFont(fi.dataset.fpId);
+    S.doc.fonts[fi.dataset.fpRole] = fi.dataset.fpId;
+    commit(); renderAll(); return;
+  }
   const b = e.target.closest('button');
   if (!b || b.disabled) return;
   const d = b.dataset;
@@ -1273,6 +1300,11 @@ insp.addEventListener('click', (e) => {
   else if (d.orient) { S.doc.sides.forEach((s) => (s.poster.orient = d.orient)); }
   else return;
   fixPos(); commit(); renderAll();
+});
+
+// список шрифтов закрывается кликом мимо него
+document.addEventListener('pointerdown', (e) => {
+  if (!e.target.closest('.fontpick')) document.querySelectorAll('.fp-list').forEach((l) => (l.hidden = true));
 });
 
 // ---------- верхняя панель ----------

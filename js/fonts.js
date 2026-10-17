@@ -19,6 +19,19 @@ export async function initFonts() {
 }
 
 export const fontList = () => list;
+// Образец для выбора шрифта: только прямое начертание (жирное — если прямого нет), без метрик для PDF —
+// чтобы название в списке было написано самим шрифтом. Семейство 'zfp-<id>'.
+const previews = new Map();
+export function previewFont(id) {
+  const f = byId[id];
+  if (!f) return Promise.resolve();
+  if (!previews.has(id)) {
+    const st = f.files.r ? 'r' : f.files.b ? 'b' : Object.keys(f.files)[0];
+    const face = new FontFace('zfp-' + id, `url(fonts/${f.files[st]}${FONT_REV})`, { weight: st.includes('b') ? '700' : '400' });
+    previews.set(id, face.load().then((ff) => document.fonts.add(ff)).catch(() => {}));
+  }
+  return previews.get(id);
+}
 export const hasFont = (id) => !!byId[id];
 
 export function ensureFont(id) {

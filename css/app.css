@@ -324,3 +324,20 @@ svg .row { fill: rgba(0, 0, 0, .025); stroke: #b8b8b8; stroke-width: .15; stroke
 }
 /* выключка вертикальных блоков: значки повёрнуты, как текст */
 .seg[data-vert] .ic { transform: rotate(-90deg); }
+
+/* выбор шрифта: названия набраны самими шрифтами */
+.fontpick { position: relative; }
+.fontpick .fp-cur { height: auto; width: 100%; display: flex; align-items: center; justify-content: space-between; text-align: left; padding: 6px 8px; }
+.fontpick .fp-cur i { font-style: normal; font-size: 10px; }
+.fp-name { font-size: 16px; line-height: 1.2; opacity: .35; transition: opacity .15s; }
+.fp-name.ok { opacity: 1; } /* пока образец грузится — бледно, системным шрифтом */
+.fp-list { position: absolute; left: 0; right: 0; top: calc(100% - 1px); z-index: 20; background: var(--bg); border: 1px solid var(--ink);
+  box-shadow: 4px 4px 0 var(--ink); max-height: 340px; overflow: auto; }
+.fp-list[hidden] { display: none; }
+.fp-group { position: sticky; top: 0; z-index: 1; background: var(--bg); padding: 8px 10px 4px; border-bottom: 1px solid var(--ink); font-size: 9px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink2); }
+.fp-list button { height: auto; display: flex; width: 100%; justify-content: space-between; align-items: baseline; gap: 8px; border: 0; border-bottom: 1px solid var(--line); padding: 8px 10px; text-align: left; }
+.fp-list button:last-child { border-bottom: 0; }
+.fp-list button.on { outline: 2px solid var(--ink); outline-offset: -2px; }
+.fp-list .fp-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } /* длинное название не выталкивает подпись */
+.fp-list button small { font-size: 9px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink2); white-space: nowrap; }
+.fp-list button:hover small { color: var(--bg); }
