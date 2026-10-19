@@ -3,7 +3,7 @@
 // светлота и насыщенность — по ролям, а контраст с бумагой проверяется по WCAG,
 // чтобы текст читался. Неудачные сочетания (грязный акцент, слипшиеся краски) отбрасываются.
 
-import { PAPERS } from './model.js?v=a376db71';
+import { PAPERS } from './model.js?v=a0df7e09';
 
 const RAD = Math.PI / 180;
 const rnd = (a, b) => a + Math.random() * (b - a);

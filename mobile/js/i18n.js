@@ -2,7 +2,7 @@
 // для en ищется в словаре EN. Подстановки: t('Колонка {n}', { n: 2 }).
 // Выбор языка общий для стартовой страницы и редактора (localStorage, с запасным вариантом).
 
-import { EN } from './i18n-en.js?v=a376db71';
+import { EN } from './i18n-en.js?v=a0df7e09';
 
 const KEY = 'zine-lang';
 let lang = (() => {

@@ -1,12 +1,12 @@
 // Движок вёрстки: документ -> список примитивов (display list) в мм.
 // Примитивы: text {x,y(базовая линия),s,key,size,fill} · rect · line · image · ph (заглушка, только редактор)
 
-import { PT, BLOCKS, pageSf, getPage, pairOf, spreadBgOf, spreadGridOf } from './model.js?v=a376db71';
-import { t } from './i18n.js?v=a376db71';
-import { W, fontKey, avgCharW, xHeight, capHeight } from './fonts.js?v=a376db71';
-import { parseText, countChars } from './md.js?v=a376db71';
-import { fitRect, assets } from './images.js?v=a376db71';
-import { qrGrid, gridPath } from './qr.js?v=a376db71';
+import { PT, BLOCKS, pageSf, getPage, pairOf, spreadBgOf, spreadGridOf } from './model.js?v=a0df7e09';
+import { t } from './i18n.js?v=a0df7e09';
+import { W, fontKey, avgCharW, xHeight, capHeight } from './fonts.js?v=a0df7e09';
+import { parseText, countChars } from './md.js?v=a0df7e09';
+import { fitRect, assets } from './images.js?v=a0df7e09';
+import { qrGrid, gridPath } from './qr.js?v=a0df7e09';
 
 const INK = '#000000';
 const GRAY = '#6b6b6b';

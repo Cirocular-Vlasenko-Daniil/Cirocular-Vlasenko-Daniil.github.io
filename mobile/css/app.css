@@ -13,7 +13,7 @@
   --err: #d23a2a;
   --u: 4px;
 }
-* { box-sizing: border-box; }
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html, body { margin: 0; height: 100%; }
 body {
   font: 12px/1.45 'UI', ui-monospace, monospace;
@@ -25,10 +25,10 @@ button, input, select, textarea { font: inherit; color: inherit; border-radius: 
 button {
   background: var(--bg); border: 1px solid var(--ink); height: 28px; padding: 0 10px; cursor: pointer; white-space: nowrap;
 }
-button:hover:not(:disabled) { background: var(--ink); color: var(--bg); }
+@media (hover: hover) { button:hover:not(:disabled) { background: var(--ink); color: var(--bg); } }
 button:disabled { border-color: var(--line); color: var(--mute); cursor: default; }
 button.primary { background: var(--ink); color: var(--bg); font-weight: 700; }
-button.primary:hover { background: #000; }
+@media (hover: hover) { button.primary:hover { background: #000; } }
 input[type=text], input:not([type]), textarea, select {
   border: 1px solid var(--line); background: var(--bg); padding: 6px 8px; width: 100%; outline: none;
 }
@@ -45,7 +45,7 @@ input[type=checkbox] { accent-color: var(--ink); width: 14px; height: 14px; marg
 .logo { font: 700 17px 'Pix', 'UI'; display: flex; align-items: center; gap: 8px; letter-spacing: .02em; color: inherit; text-decoration: none; white-space: nowrap; }
 .logo i { width: 14px; height: 14px; background: var(--ink); box-shadow: 4px 4px 0 var(--mute); display: block; }
 .title { width: 240px !important; min-width: 80px; flex-shrink: 1; border-color: transparent !important; font-weight: 700; }
-.title:hover { border-color: var(--line) !important; }
+@media (hover: hover) { .title:hover { border-color: var(--line) !important; } }
 .title:focus { border-color: var(--ink) !important; }
 .grow { flex: 1; }
 .saved { color: var(--mute); }
@@ -76,7 +76,7 @@ aside { overflow: auto; min-height: 0; }
   display: flex; gap: 10px; align-items: center;
   border: 1px solid var(--line); padding: 8px; cursor: grab; user-select: none; touch-action: none; background: var(--bg);
 }
-.tile:hover { border-color: var(--ink); }
+@media (hover: hover) { .tile:hover { border-color: var(--ink); } }
 .tile b { font-weight: 700; }
 .tile small { color: var(--ink2); font-size: 10px; }
 .ic { width: 24px; height: 24px; display: block; }
@@ -104,21 +104,23 @@ svg .ph.faint { fill: none; stroke: #e2e2e2; }
 svg .phl { font-family: 'UI'; fill: #8f8f8f; }
 /* ячейки сетки: скрыты, видны при наведении на блок и во время перетаскивания/ресайза */
 svg .row { fill: rgba(0, 0, 0, .025); stroke: #b8b8b8; stroke-width: .15; stroke-dasharray: .6 .6; opacity: 0; transition: opacity .12s; }
-.page:has(.blk:hover) svg .row, body.dnd .page svg .row { opacity: 1; }
+body.dnd .page svg .row { opacity: 1; }
+@media (hover: hover) { .page:has(.blk:hover) svg .row { opacity: 1; } }
 .swatches { display: flex; flex-wrap: wrap; gap: 4px; }
 .sw { width: 26px; height: 26px; padding: 0; border: 1px solid var(--line); cursor: pointer; position: relative; display: block; }
-.sw:hover { border-color: var(--ink); background-blend-mode: normal; }
+@media (hover: hover) { .sw:hover { border-color: var(--ink); background-blend-mode: normal; } }
 .sw.on { outline: 2px solid var(--ink); outline-offset: 1px; }
 .sw.custom input { opacity: 0; position: absolute; inset: 0; width: 100%; height: 100%; cursor: pointer; }
 .sw.custom::after { content: '+'; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 13px; color: var(--ink); pointer-events: none; }
 
 .blk { position: absolute; cursor: pointer; touch-action: none; }
-.blk:hover { outline: 1px dashed var(--mute); }
+@media (hover: hover) { .blk:hover { outline: 1px dashed var(--mute); } }
 .blk.sel { outline: 1px solid var(--ink); }
 .blk.sel.pan { cursor: move; }
 .blk.over { outline: 1px dashed var(--err); }
 .blk .grip, .blk .rs { position: absolute; background: var(--ink); display: none; }
-.blk:hover .grip, .blk.sel .grip { display: block; }
+.blk.sel .grip { display: block; }
+@media (hover: hover) { .blk:hover .grip { display: block; } }
 .blk .grip { left: -1px; top: -13px; height: 12px; padding: 0 5px; color: #fff; font-size: 9px; line-height: 12px; cursor: grab; width: auto; }
 .blk .rs { width: 12px; height: 12px; right: -6px; bottom: -6px; cursor: nwse-resize; z-index: 2; }
 .blk .rs.tr { top: -6px; bottom: auto; cursor: nesw-resize; }  /* верхний и правый край */
@@ -128,7 +130,8 @@ svg .row { fill: rgba(0, 0, 0, .025); stroke: #b8b8b8; stroke-width: .15; stroke
   position: absolute; right: -1px; bottom: -15px; font-size: 9px; line-height: 13px; padding: 0 4px;
   background: #fff; border: 1px solid var(--line); color: var(--ink2); white-space: nowrap; display: none;
 }
-.blk:hover .badge, .blk.sel .badge, .blk.over .badge { display: block; }
+.blk.sel .badge, .blk.over .badge { display: block; }
+@media (hover: hover) { .blk:hover .badge { display: block; } }
 .blk.over .badge { border-color: var(--err); color: var(--err); display: block; }
 .drop-hint {
   position: absolute; inset: 12% 10%; display: flex; align-items: center; justify-content: center; text-align: center;
@@ -158,7 +161,7 @@ svg .row { fill: rgba(0, 0, 0, .025); stroke: #b8b8b8; stroke-width: .15; stroke
 .sheet { position: relative; background: #fff; outline: 1px solid var(--ink); }
 .sheet svg { position: absolute; inset: 0; width: 100%; height: 100%; }
 .slot { position: absolute; cursor: pointer; }
-.slot:hover { outline: 2px solid var(--ink); outline-offset: -2px; }
+@media (hover: hover) { .slot:hover { outline: 2px solid var(--ink); outline-offset: -2px; } }
 .slot span {
   position: absolute; left: 4px; top: 4px; background: var(--ink); color: #fff; font-size: 10px; padding: 0 4px; line-height: 14px;
 }
@@ -178,7 +181,7 @@ svg .row { fill: rgba(0, 0, 0, .025); stroke: #b8b8b8; stroke-width: .15; stroke
 .thumb { position: relative; cursor: pointer; outline: 1px solid var(--line); background: #fff; }
 .thumb + .thumb { margin-left: 1px; }
 .thumb svg { display: block; }
-.thumb:hover { outline-color: var(--ink2); }
+@media (hover: hover) { .thumb:hover { outline-color: var(--ink2); } }
 .thumb.on { outline: 2px solid var(--ink); z-index: 1; }
 .thumb.drop { outline: 2px dashed var(--ink); }
 .thumb b { position: absolute; left: 0; bottom: 0; font-size: 9px; background: var(--ink); color: #fff; padding: 0 3px; line-height: 12px; font-weight: 400; }
@@ -340,7 +343,7 @@ svg .row { fill: rgba(0, 0, 0, .025); stroke: #b8b8b8; stroke-width: .15; stroke
 .fp-list button.on { outline: 2px solid var(--ink); outline-offset: -2px; }
 .fp-list .fp-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } /* длинное название не выталкивает подпись */
 .fp-list button small { font-size: 9px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink2); white-space: nowrap; }
-.fp-list button:hover small { color: var(--bg); }
+@media (hover: hover) { .fp-list button:hover small { color: var(--bg); } }
 
 /* ---------- касание (телефон, планшет): панель у блока, «+», блок рисуется пальцем по ячейкам ---------- */
 .fab, .tmenu, .shead { display: none; }
@@ -372,7 +375,7 @@ body.touch .tmenu.up:not([hidden]) { align-self: start; margin: 10px 0 0; }
 .tbar { position: absolute; z-index: 8; display: flex; background: var(--ink); box-shadow: 3px 3px 0 var(--mute); }
 .tbar button { height: 40px; min-width: 44px; padding: 0 12px; border: 0; background: var(--ink); color: var(--bg); font-size: 13px; }
 .tbar button + button { border-left: 1px solid #555; }
-.tbar button:hover:not(:disabled) { background: #000; }
+@media (hover: hover) { .tbar button:hover:not(:disabled) { background: #000; } }
 body.dnd .tbar { display: none; }
 /* место нового блока, нарисованное пальцем */
 .ins.draw { background: rgba(43, 43, 43, .14); }
@@ -450,7 +453,7 @@ body.touch #fileBtn { display: inline-block; }
 .fmenu button:last-child { border-bottom: 0; }
 .fmenu .fm-main { height: auto; padding: 10px 14px; background: var(--ink); color: var(--bg); font-weight: 700; display: flex; flex-direction: column; gap: 2px; border-bottom: 1px solid var(--ink); }
 .fmenu .fm-main small { font-weight: 400; font-size: 11px; color: #cfcfcf; }
-.fmenu .fm-main:hover { background: #000; }
+@media (hover: hover) { .fmenu .fm-main:hover { background: #000; } }
 .car-tabs .ic { display: none; }
 /* вариант «плитки»: значок над подписью, плитки делят ширину поровну */
 body.tabs-icons .car-tabs button {

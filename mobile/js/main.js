@@ -1,16 +1,16 @@
-import * as M from './model.js?v=a376db71';
-import { t as tr, getLang, bindLangSwitch } from './i18n.js?v=a376db71';
-import { initAnalytics, track } from './analytics.js?v=a376db71';
-import { initFonts, ensureFont, fontList, hasFont, previewFont } from './fonts.js?v=a376db71';
-import { pageDL, pageLayout, cellAt } from './layout.js?v=a376db71';
-import { randomPalette } from './palette.js?v=a376db71';
-import { pageSVG, svgInner } from './render.js?v=a376db71';
-import { assets, importImage, registerAsset, setOnReady, makeSampleAsset, effectiveDpi, dimsOf, containZoom } from './images.js?v=a376db71';
-import { pagesZip } from './raster.js?v=a376db71';
-import { buildPDF } from './pdf.js?v=a376db71';
-import { htmlToMd, looksLikeMd } from './md.js?v=a376db71';
-import { flowMarkdown } from './flow.js?v=a376db71';
-import * as store from './store.js?v=a376db71';
+import * as M from './model.js?v=a0df7e09';
+import { t as tr, getLang, bindLangSwitch } from './i18n.js?v=a0df7e09';
+import { initAnalytics, track } from './analytics.js?v=a0df7e09';
+import { initFonts, ensureFont, fontList, hasFont, previewFont } from './fonts.js?v=a0df7e09';
+import { pageDL, pageLayout, cellAt } from './layout.js?v=a0df7e09';
+import { randomPalette } from './palette.js?v=a0df7e09';
+import { pageSVG, svgInner } from './render.js?v=a0df7e09';
+import { assets, importImage, registerAsset, setOnReady, makeSampleAsset, effectiveDpi, dimsOf, containZoom } from './images.js?v=a0df7e09';
+import { pagesZip } from './raster.js?v=a0df7e09';
+import { buildPDF } from './pdf.js?v=a0df7e09';
+import { htmlToMd, looksLikeMd } from './md.js?v=a0df7e09';
+import { flowMarkdown } from './flow.js?v=a0df7e09';
+import * as store from './store.js?v=a0df7e09';
 
 const $ = (s) => document.querySelector(s);
 const S = { doc: null, side: 0, page: 0, sel: null, view: 'pages', info: {} };
@@ -1523,7 +1523,8 @@ canvas.addEventListener('pointerdown', (e) => {
   }
   const pg = e.target.closest('.page[data-page]');
   if (!pg) {
-    const desk = e.target === canvas || e.target.closest('.spread') === null;
+    // на касании «стол» — всё вокруг страницы, включая подпись под ней: там тоже листают взмахом
+    const desk = touchMode() || e.target === canvas || e.target.closest('.spread') === null;
     if (desk && S.zoom && S.view === 'pages') return panZoom(e); // увеличено — стол двигает страницу
     if (desk && touchMode() && S.view === 'pages') { // по столу: взмах листает, тап снимает выделение
       const sx = e.clientX, sy = e.clientY, t0 = performance.now(), g = gestureGen;
