@@ -384,6 +384,10 @@ body.dnd .tbar { display: none; }
 /* сетка видна всегда: по ней рисуют блоки; страница не прокручивается и не масштабируется под пальцем */
 body.touch .page svg .row { opacity: .7; }
 body.touch .page { touch-action: none; }
+/* и поле вокруг страницы: иначе браузер забирает горизонтальный взмах (прокрутка, «назад») и отменяет касание;
+   общая сетка на узком экране — поле прокручивает лист вбок */
+body.touch #canvas { touch-action: none; }
+body.touch #canvas.hscroll { touch-action: pan-x; }
 @media (pointer: coarse) {
   .blk .rs::before { content: ''; position: absolute; inset: -11px; } /* место под палец — 44 px */
 }

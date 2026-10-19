@@ -1,16 +1,16 @@
-import * as M from './model.js?v=a0df7e09';
-import { t as tr, getLang, bindLangSwitch } from './i18n.js?v=a0df7e09';
-import { initAnalytics, track } from './analytics.js?v=a0df7e09';
-import { initFonts, ensureFont, fontList, hasFont, previewFont } from './fonts.js?v=a0df7e09';
-import { pageDL, pageLayout, cellAt } from './layout.js?v=a0df7e09';
-import { randomPalette } from './palette.js?v=a0df7e09';
-import { pageSVG, svgInner } from './render.js?v=a0df7e09';
-import { assets, importImage, registerAsset, setOnReady, makeSampleAsset, effectiveDpi, dimsOf, containZoom } from './images.js?v=a0df7e09';
-import { pagesZip } from './raster.js?v=a0df7e09';
-import { buildPDF } from './pdf.js?v=a0df7e09';
-import { htmlToMd, looksLikeMd } from './md.js?v=a0df7e09';
-import { flowMarkdown } from './flow.js?v=a0df7e09';
-import * as store from './store.js?v=a0df7e09';
+import * as M from './model.js?v=1eb64202';
+import { t as tr, getLang, bindLangSwitch } from './i18n.js?v=1eb64202';
+import { initAnalytics, track } from './analytics.js?v=1eb64202';
+import { initFonts, ensureFont, fontList, hasFont, previewFont } from './fonts.js?v=1eb64202';
+import { pageDL, pageLayout, cellAt } from './layout.js?v=1eb64202';
+import { randomPalette } from './palette.js?v=1eb64202';
+import { pageSVG, svgInner } from './render.js?v=1eb64202';
+import { assets, importImage, registerAsset, setOnReady, makeSampleAsset, effectiveDpi, dimsOf, containZoom } from './images.js?v=1eb64202';
+import { pagesZip } from './raster.js?v=1eb64202';
+import { buildPDF } from './pdf.js?v=1eb64202';
+import { htmlToMd, looksLikeMd } from './md.js?v=1eb64202';
+import { flowMarkdown } from './flow.js?v=1eb64202';
+import * as store from './store.js?v=1eb64202';
 
 const $ = (s) => document.querySelector(s);
 const S = { doc: null, side: 0, page: 0, sel: null, view: 'pages', info: {} };
@@ -247,6 +247,7 @@ function renderStage() {
   } else { pages = M.spreads(S.doc, S.side)[spreadOf(S.page)]; k = fitScale(sf.w * pages.length, sf.h); }
   const keep = canvas.classList.contains('hscroll') ? canvas.scrollLeft : null;
   canvas.classList.toggle('hscroll', hs);
+  if (!hs) { canvas.scrollLeft = 0; canvas.scrollTop = 0; } // прокрутка — только у общей сетки на узком экране
   canvas.innerHTML = `<div class="spread${pages.length > 1 ? ' two' : ''}${pair ? ' peek' : ''}" style="--shift:${shift}px" data-shift="${shift}">${pages.map((p) => pageHTML(S.side, p, k)).join('')}</div>`;
   if (pair) canvas.querySelectorAll('.page[data-page]').forEach((p) => +p.dataset.page !== S.page && p.closest('.pagewrap').classList.add('ctx'));
   if (hs) {
@@ -397,7 +398,8 @@ function setHalf(p) {
 }
 let hsT;
 canvas.addEventListener('scroll', () => {
-  if (!canvas.classList.contains('hscroll')) return;
+  // обычный холст прокручиваться не должен (браузер может сдвинуть и overflow: hidden) — возвращаем
+  if (!canvas.classList.contains('hscroll')) { if (canvas.scrollLeft || canvas.scrollTop) { canvas.scrollLeft = 0; canvas.scrollTop = 0; } return; }
   clearTimeout(hsT);
   hsT = setTimeout(() => {
     const gp = M.spreadGridOf(S.doc, S.side, S.page), pg = canvas.querySelector('.page[data-page]');
@@ -1814,7 +1816,7 @@ insp.addEventListener('change', async (e) => {
 
 insp.addEventListener('click', async (e) => {
   const ct = e.target.closest('[data-car]');
-  if (ct) return goSlide(+ct.dataset.car, true);
+  if (ct) return goSlide(+ct.dataset.car, false); // сразу к разделу — без пролистывания промежуточных
   // выбор шрифта: открыть список (образцы шрифтов подгружаются) / выбрать
   const fp = e.target.closest('.fp-cur');
   if (fp) {
