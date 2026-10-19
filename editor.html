@@ -16,7 +16,7 @@
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="stylesheet" href="css/app.css?v=5159f6f2">
+<link rel="stylesheet" href="css/app.css?v=1eb64202">
 <script src="vendor/pdf-lib.min.js"></script>
 <script src="vendor/fontkit.umd.min.js"></script>
 <script src="vendor/qrcode.js"></script>
@@ -48,6 +48,7 @@
   <button id="redo" title="Вернуть (⇧⌘Z)" data-i18n-title>↷</button>
   <div class="seg lang" id="langSwitch"><button data-lang="ru">RU</button><button data-lang="en">EN</button></div>
   <button id="exportBtn" class="primary">PDF ↓</button>
+  <button id="fileBtn" class="primary" data-fmenu><span data-i18n>Файл</span> ▾</button>
 </header>
 
 <main>
@@ -58,8 +59,12 @@
   <section class="stage">
     <div id="canvas"></div>
     <nav id="nav"></nav>
+    <button class="zbadge" id="zbadge" hidden title="Вернуть 1:1" data-i18n-title></button>
+    <button class="fab" id="fab" aria-label="Добавить блок" data-i18n-title title="Добавить блок">+</button>
+    <div class="tmenu" id="tmenu" hidden></div>
   </section>
   <aside class="right">
+    <div class="shead"><b id="shTitle"></b><button data-sheet-close data-i18n>Готово</button></div>
     <div class="filebar" id="filebar">
       <button data-act="new" data-i18n>Новый</button><button data-act="sample" data-i18n>Пример</button>
       <button data-act="open" data-i18n>Открыть</button><button data-act="save" data-i18n>Сохранить</button>
@@ -69,13 +74,13 @@
 </main>
 
 <nav class="mbar" id="mbar">
-  <button data-sheet="palette"><span class="mb-plus">+</span> <span data-i18n>Блоки</span></button>
   <button data-sheet="inspector"><span data-i18n>Свойства</span><i class="mb-dot"></i></button>
   <button data-proxy="undo" aria-label="Undo"></button>
   <button data-proxy="redo" aria-label="Redo"></button>
-  <button data-proxy="exportBtn" class="primary">PDF ↓</button>
+  <button data-fmenu class="primary"><span data-i18n>Файл</span> ▾</button>
 </nav>
 
+<div class="fmenu" id="fmenu" hidden></div>
 <div id="modal" hidden></div>
 <div id="toast"></div>
 <input type="file" id="fileImg" accept="image/*" hidden>
@@ -92,6 +97,6 @@
     document.body.appendChild(d);
   });
 </script>
-<script type="module" src="js/main.js?v=5159f6f2"></script>
+<script type="module" src="js/main.js?v=1eb64202"></script>
 </body>
 </html>
